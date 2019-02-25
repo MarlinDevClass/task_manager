@@ -6,6 +6,16 @@ if(!isset($_SESSION['user_id'])) {
     exit;
 }
 
+
+//подготовка и выполнение запроса к БД
+$pdo = new PDO('mysql:host=localhost;dbname=task_manager', 'homestead', 'secret');
+$sql = 'SELECT * from tasks where user_id=:user_id';
+$statement = $pdo->prepare($sql);
+$statement->execute([
+  ':user_id' =>  $_SESSION['user_id']
+]);
+$tasks = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -58,7 +68,7 @@ if(!isset($_SESSION['user_id'])) {
           <h1 class="jumbotron-heading">Проект Task-manager</h1>
           <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Добавить запись</a>
+            <a href="/create-form.php" class="btn btn-primary my-2">Добавить запись</a>
           </p>
         </div>
       </section>
@@ -67,21 +77,24 @@ if(!isset($_SESSION['user_id'])) {
         <div class="container">
 
           <div class="row">
+            <?php foreach($tasks as $task): ?>
              <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
-                <img class="card-img-top" src="assets/img/no-image.jpg">
+                <img class="card-img-top" src="/uploads/<?php echo $task['image'];?>">
                 <div class="card-body">
-                  <p class="card-text">Lorem ipsum</p>
+                  <p class="card-text"><?php echo $task['title'];?></p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="#" class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                      <a href="#" class="btn btn-sm btn-outline-secondary">Изменить</a>
-                      <a href="#" class="btn btn-sm btn-outline-secondary" onclick="confirm('are you sure?')">Удалить</a>
+                      <a href="/show.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                      <a href="/edit.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary">Изменить</a>
+                      <a href="/delete.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary" onclick="confirm('are you sure?')">Удалить</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <?php endforeach;?>
+
             <!--<div class="col-md-4">
               <div class="card mb-4 shadow-sm">
                 <img class="card-img-top" src="assets/img/no-image.jpg">
