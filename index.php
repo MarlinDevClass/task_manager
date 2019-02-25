@@ -86,7 +86,7 @@ $tasks = $statement->fetchAll(PDO::FETCH_ASSOC);
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <a href="/show.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                      <a href="/edit.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary">Изменить</a>
+                      <a href="/edit-form.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary">Изменить</a>
                       <a href="/delete.php?id=<?php echo $task['id'];?>" class="btn btn-sm btn-outline-secondary" onclick="confirm('are you sure?')">Удалить</a>
                     </div>
                   </div>
