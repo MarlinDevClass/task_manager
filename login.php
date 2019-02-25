@@ -13,13 +13,14 @@ foreach($_POST as $input) {
 
 //подготовка и выполнение запроса к БД
 $pdo = new PDO('mysql:host=localhost;dbname=task_manager', 'homestead', 'secret');
-$sql = 'SELECT id from users where email=:email AND password=:password';
+$sql = 'SELECT id,username,email from users where email=:email AND password=:password';
 $statement = $pdo->prepare($sql);
 $statement->execute([
 	':email'	=>	$email,
 	':password'	=>	md5($password)
 ]);
 $user = $statement->fetch(PDO::FETCH_ASSOC);
+
 //Не нашли пользователя
 if(!$user) {
     $errorMessage = 'Неверный логин или пароль';
