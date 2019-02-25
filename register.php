@@ -14,7 +14,7 @@ foreach($_POST as $input) {
 }
 
 //подготовка и выполнение запроса к БД
-$pdo = new PDO('mysql:host=localhost;dbname=task-manager', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=task_manager', 'homestead', 'secret');
 $sql = 'SELECT id from users where email=:email';
 $statement = $pdo->prepare($sql);
 $statement->execute([':email'	=>	$email]);
